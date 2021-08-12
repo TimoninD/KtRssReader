@@ -23,6 +23,7 @@ object ParserConst {
     const val CHANNEL = "channel"
     const val TITLE = "title"
     const val DESCRIPTION = "description"
+    const val CONTENT_ENCODED = "content:encoded"
     const val IMAGE = "image"
     const val LANGUAGE = "language"
     const val CATEGORY = "category"

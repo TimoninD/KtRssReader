@@ -21,6 +21,7 @@ import org.w3c.dom.Element
 import tw.ktrssreader.kotlin.constant.ParserConst.CATEGORY
 import tw.ktrssreader.kotlin.constant.ParserConst.CHANNEL
 import tw.ktrssreader.kotlin.constant.ParserConst.CLOUD
+import tw.ktrssreader.kotlin.constant.ParserConst.CONTENT_ENCODED
 import tw.ktrssreader.kotlin.constant.ParserConst.DAY
 import tw.ktrssreader.kotlin.constant.ParserConst.DESCRIPTION
 import tw.ktrssreader.kotlin.constant.ParserConst.DOMAIN
@@ -30,6 +31,7 @@ import tw.ktrssreader.kotlin.constant.ParserConst.GUID
 import tw.ktrssreader.kotlin.constant.ParserConst.HEIGHT
 import tw.ktrssreader.kotlin.constant.ParserConst.HOUR
 import tw.ktrssreader.kotlin.constant.ParserConst.IMAGE
+import tw.ktrssreader.kotlin.constant.ParserConst.ITEM
 import tw.ktrssreader.kotlin.constant.ParserConst.ITUNES_EMAIL
 import tw.ktrssreader.kotlin.constant.ParserConst.ITUNES_NAME
 import tw.ktrssreader.kotlin.constant.ParserConst.ITUNES_OWNER
@@ -95,6 +97,10 @@ abstract class ParserBase<out T : RssStandardChannel> : Parser<T> {
         )
     }
 
+    protected fun Element.readItemDescription(): String? {
+        return readString(CONTENT_ENCODED, DESCRIPTION)
+    }
+
     protected fun Element.readCategories(parentTag: String): List<Category> {
         val result = mutableListOf<Category>()
         val nodeList = getElementsByTagName(CATEGORY) ?: return result
@@ -124,6 +130,7 @@ abstract class ParserBase<out T : RssStandardChannel> : Parser<T> {
         }
         return result
     }
+
 
     protected fun Element.readITunesOwner(): Owner? {
         val nodeList = getElementsByTagName(ITUNES_OWNER) ?: return null

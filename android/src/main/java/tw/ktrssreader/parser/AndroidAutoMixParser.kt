@@ -439,7 +439,7 @@ class AndroidAutoMixParser : AndroidParserBase<AutoMixChannelData>() {
                 ENCLOSURE -> enclosure = readEnclosure()
                 GUID -> guid = readGuid()
                 PUB_DATE -> pubDate = readString(PUB_DATE)
-                DESCRIPTION -> description = readString(DESCRIPTION)
+                DESCRIPTION -> description = readItemDescription(DESCRIPTION)
                 LINK -> link = readString(LINK)
                 AUTHOR -> author = readString(AUTHOR)
                 CATEGORY -> readCategory()?.let { categories.add(it) }

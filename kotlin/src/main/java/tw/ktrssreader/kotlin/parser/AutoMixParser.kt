@@ -240,7 +240,7 @@ class AutoMixParser : ParserBase<AutoMixChannel>() {
                 val enclosure: Enclosure? = readEnclosure()
                 val guid: Guid? = readGuid()
                 val pubDate: String? = readString(PUB_DATE)
-                val description: String? = readString(name = DESCRIPTION, parentTag = ITEM)
+                val description: String? = readItemDescription()//readItem(name = DESCRIPTION, parentTag = ITEM)
                 val link: String? = readString(LINK, parentTag = ITEM)
                 val author: String? = readString(AUTHOR)
                 val categories = readCategories(ITEM)

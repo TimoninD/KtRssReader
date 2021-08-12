@@ -24,6 +24,7 @@ import tw.ktrssreader.kotlin.constant.ParserConst.CATEGORY
 import tw.ktrssreader.kotlin.constant.ParserConst.CHANNEL
 import tw.ktrssreader.kotlin.constant.ParserConst.CLOUD
 import tw.ktrssreader.kotlin.constant.ParserConst.COMMENTS
+import tw.ktrssreader.kotlin.constant.ParserConst.CONTENT_ENCODED
 import tw.ktrssreader.kotlin.constant.ParserConst.COPYRIGHT
 import tw.ktrssreader.kotlin.constant.ParserConst.DAY
 import tw.ktrssreader.kotlin.constant.ParserConst.DESCRIPTION
@@ -99,6 +100,19 @@ abstract class AndroidParserBase<out T : RssStandardChannel> : tw.ktrssreader.ko
                 nextTag()
             }
         }
+    }
+
+    @Throws(IOException::class, XmlPullParserException::class)
+    protected fun XmlPullParser.readItemDescription(tagName: String): String? {
+        require(XmlPullParser.START_TAG, null, tagName)
+        var content: String? = null
+        while (next() != XmlPullParser.END_TAG) {
+            if (eventType != XmlPullParser.START_TAG) continue
+            content = readString(CONTENT_ENCODED)
+        }
+        require(XmlPullParser.END_TAG, null, tagName)
+        logD(logTag, "[readString] tag name = $tagName, content = $content")
+        return content
     }
 
     @Throws(IOException::class, XmlPullParserException::class)
@@ -257,7 +271,7 @@ abstract class AndroidParserBase<out T : RssStandardChannel> : tw.ktrssreader.ko
                 ENCLOSURE -> enclosure = readEnclosure()
                 GUID -> guid = readGuid()
                 PUB_DATE -> pubDate = readString(PUB_DATE)
-                DESCRIPTION -> description = readString(DESCRIPTION)
+                DESCRIPTION -> description = readItemDescription(DESCRIPTION)
                 LINK -> link = readString(LINK)
                 AUTHOR -> author = readString(AUTHOR)
                 CATEGORY -> categories.add(readCategory())

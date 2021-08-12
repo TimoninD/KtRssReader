@@ -61,7 +61,7 @@ class ITunesParser : ParserBase<ITunesChannelData>() {
     override fun parse(xml: String): ITunesChannelData {
         return parseChannel(xml) {
             val title = readString(TITLE)
-            val description = readString(name = DESCRIPTION, parentTag = CHANNEL)
+            val description = "" //readString(name = DESCRIPTION, parentTag = CHANNEL)
             val link = readString(LINK)
             val language = readString(LANGUAGE)
             val copyright = readString(COPYRIGHT)
@@ -80,8 +80,7 @@ class ITunesParser : ParserBase<ITunesChannelData>() {
 
             val image: Image? = readITunesImage()
             val explicit: Boolean? = readString(ITUNES_EXPLICIT)?.toBoolean()
-            val categories: List<Category>? =
-                readCategories(parentTag = CHANNEL, tagName = ITUNES_CATEGORY)
+            val categories: List<Category>? = listOf()
             val author: String? = readString(ITUNES_AUTHOR)
             val owner: Owner? = readITunesOwner()
             val simpleTitle: String? = readString(ITUNES_TITLE)

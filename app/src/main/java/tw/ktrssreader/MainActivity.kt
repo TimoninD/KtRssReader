@@ -1,6 +1,7 @@
 package tw.ktrssreader
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -12,15 +13,19 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import tw.ktrssreader.kotlin.model.channel.ITunesChannelData
+import tw.ktrssreader.kotlin.model.channel.RssStandardChannelData
+import tw.ktrssreader.kotlin.parser.ITunesParser
 import tw.ktrssreader.reader.RssReader
 import tw.ktrssreader.reader.RssType
+import java.net.URL
 import java.nio.charset.Charset
 import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
 
     companion object {
-        private const val DEFAULT_RSS_URL = "https://feeds.fireside.fm/wzd/rss"
+        private const val DEFAULT_RSS_URL = "https://vk.com/podcasts-147415323_-1000000.rss"
         private const val DEFAULT_CHARSET = "UTF-8"
         private val RSS_URL_LIST = listOf(
             "https://feeds.fireside.fm/wzd/rss",
@@ -117,9 +122,14 @@ class MainActivity : AppCompatActivity() {
 
             try {
                 val channel = withContext(Dispatchers.IO) {
-                    RssReader.coRead(rssType, rssText, useCache, charset)
+                    val podcastUrl = URL(rssText)
+                    val result = podcastUrl.readText()
+                    ITunesParser().parse(result)
+                    //RssReader.coRead(rssType, rssText, useCache, charset)
                 }
 
+                val a = channel
+                Log.e("DA",a.author.toString())
                 textView.text = channel.toString()
                 progressBar.visibility = View.INVISIBLE
             } catch (e: Exception) {
